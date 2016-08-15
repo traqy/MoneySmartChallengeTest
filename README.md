@@ -33,7 +33,22 @@
     * User/Customer Capabilities upon booking
       * Add
       * View/Search
-      * Cancel
+      * Cancel - Can cancel only the slot reserved by the same user
+
+## Data Structure Design
+  * DB
+    * Booking
+      * id - primary key ( Unique record for tennis court date schedule )
+      * date - (Unique date)
+      * Hour - Hourly slot
+      * ReserveeId - User who reserved the slot (e.g. Fabebook, Google, Twitter, etc)
+      * ReserveeDesc - Additional details of the users.
+      * status - (1 - Reserved, 0 - Available, -1 -Closed )
+      * tstamp - datetime record updated
+    * BookingTemplate
+      * Hour - Hourly slot
+
+
 
 ## Deployment using Docker
   * Build images
@@ -42,4 +57,3 @@
     * Web Server - NodeJS webapp service
     * REST API - Python Flask RESTFul service
 
-    
