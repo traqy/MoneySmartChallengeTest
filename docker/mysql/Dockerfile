@@ -16,8 +16,8 @@ RUN apt-get install -y telnet wget curl
 # Setup MySQL Server
 RUN apt-get install -y mysql-server
 
+# Copy my.cnf
+COPY ./etc/my.cnf /etc/mysql/my.cnf
+
 # Copy scripts
 RUN mkdir -p /root/scripts
-COPY setup-data-structure-booking.sh /root/scripts/
-COPY booking-structure.sql /root/scripts
-COPY run-mysql.sh /root/scripts
