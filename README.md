@@ -90,6 +90,7 @@ cd docker/mysql
 cd docker/webapp
 ./run.sh
 ```
+
   * Show running containers
     ```
 CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
