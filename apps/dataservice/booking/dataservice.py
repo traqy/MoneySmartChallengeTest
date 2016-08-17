@@ -44,7 +44,7 @@ def cancel():
 Admin API for generating future date slots
 
 example curl:
-    curl -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "dateFrom" : "2016-09-01", "dateTo" : "2016-09-30" }' http://192.168.99.100:5000/mini-app-booking-ds/api/admin/generate
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "dateFrom" : "2016-09-01", "dateTo" : "2016-09-30" }' http://192.168.99.100:5000/mini-app-booking-ds/api/admin/generate
 '''
 @app.route('/mini-app-booking-ds/api/admin/generate', methods=["PUT", "POST"])
 def generate():

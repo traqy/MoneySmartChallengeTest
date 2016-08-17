@@ -51,6 +51,53 @@ class Booking(object):
         self.response = {}
         self.error = "";
 
+
+    def register(self):
+        cursor = cnx.cursor()
+
+        if self.isRegistered:
+            message = "{0} is already registered.".format(self.UserId)
+            self.response = { 'register' : { 'status' : 'failed', 'message' : message } }
+        else:
+            try:
+                query_sql = ( "INSERT INTO User (Username, AccessLevel) VALUES (%(UserId)s, 1)" )
+                query_data = {
+                    'UserId' : self.UserId
+                }
+                cursor = cnx.cursor()
+                cursor.execute(query_sql, query_data )
+                message = "User {0} is successfully registered.".format(self.UserId)
+                self.response = { 'register' : { 'status' : 'success', 'message' : 'Exception error encountered.' } }
+            except:
+                self.response = { 'register' : { 'status' : 'failed', 'message' : 'Exception error encountered.' } }
+
+        cursor.close()
+
+    def isRegistered(self):
+        cursor = cnx.cursor()
+
+        try:
+
+            query_sql = ( "SELECT Username FROM User WHERE Username = %(UserId)s" )
+            query_data = {
+                'UserId' : self.UserId
+            }
+
+            cursor = cnx.cursor()
+            cursor.execute(query_sql, query_data )
+
+            row = cursor.fetchone()
+            username = row[0]
+            if username == self.UserId:
+                return True
+            else:
+                return False
+        except:
+            self.error = traceback.print_exception()
+            pass
+        cursor.close()
+
+
     def reserve(self):
 
         if self.isSlotAvailable():
@@ -77,8 +124,36 @@ class Booking(object):
         else:
             self.response = { 'reserve' : { 'status' : 'failed', 'message' : 'Slot is not available.' } }
 
+
     def getResponse(self):
         return self.response
+
+    def isSlotDateFinished(self):
+        cursor = cnx.cursor()
+
+        try:
+
+            query_sql = ( "SELECT Date FROM Booking WHERE id=%(id)s" )
+            query_data = {
+                'id' : self.id
+            }
+
+            cursor = cnx.cursor()
+            cursor.execute(query_sql, query_data )
+
+            row = cursor.fetchone()
+            slot_date = row[0]
+
+            present = datetime.now().date()
+
+            if present > slot_date:
+                return True
+            else:
+                return False
+        except:
+            self.error = traceback.print_exception()
+            pass
+        cursor.close()
 
     def cancel(self):
 
@@ -88,6 +163,8 @@ class Booking(object):
 
             if self.isSlotAvailable():
                 self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'Slot is already available.' } }
+            elif self.isSlotDateFinished():
+                self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'You cannot cancel past reservation.' } }
             elif self.isOwner():
                 query_data = {
                     'id' : self.id
