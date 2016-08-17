@@ -34,7 +34,7 @@
         * Cancel existing booking
         * View Date Slots
         * Generate future dates slots
-        
+
   * User Registration
     * Prepopulated User table for the purpose of testing the internal DataService REST API endpoints
 
@@ -106,6 +106,15 @@ CONTAINER ID        IMAGE                               COMMAND                 
 
 
 ## Dataservice RESTful-API Endpoints
+  * Register
+    * Request
+    ```
+    url -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
+```
+    * Response
+    ```
+    {"register": {"status": "success", "message": "User usertest2 is successfully registered."}}
+```
   * Reserve
     * Request
     ```

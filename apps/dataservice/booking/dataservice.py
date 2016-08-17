@@ -10,6 +10,22 @@ from Booking import Booking
 
 
 '''
+api method for registering or adding user
+
+example curl
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
+'''
+@app.route('/mini-app-booking-ds/api/user/register', methods=["PUT", "POST"])
+def register():
+    content = cjson.decode(request.data)
+    booking = Booking( UserId = content.get('username') )
+    booking.register()
+    json_retval = cjson.encode(booking.getResponse())
+
+    return json_retval
+
+
+'''
 api method to reserve a slot
 
 example curl:
