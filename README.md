@@ -91,7 +91,7 @@ cd docker/mysql
 cd docker/mysql
 ./run.sh
 ```
-    * Web Server - NodeJS webapp service
+    * Web Server - NodeJS webapp service ( http://192.168.99.100:8080/ )
     ```
 cd docker/webapp
 ./run.sh
