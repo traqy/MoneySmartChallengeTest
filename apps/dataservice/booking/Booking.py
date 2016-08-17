@@ -55,7 +55,7 @@ class Booking(object):
     def register(self):
         cursor = cnx.cursor()
 
-        if self.isRegistered:
+        if self.isRegistered():
             message = "{0} is already registered.".format(self.UserId)
             self.response = { 'register' : { 'status' : 'failed', 'message' : message } }
         else:
@@ -66,9 +66,11 @@ class Booking(object):
                 }
                 cursor = cnx.cursor()
                 cursor.execute(query_sql, query_data )
+                cnx.commit()
                 message = "User {0} is successfully registered.".format(self.UserId)
-                self.response = { 'register' : { 'status' : 'success', 'message' : 'Exception error encountered.' } }
+                self.response = { 'register' : { 'status' : 'success', 'message' : message } }
             except:
+                traceback.print_exc()
                 self.response = { 'register' : { 'status' : 'failed', 'message' : 'Exception error encountered.' } }
 
         cursor.close()
@@ -85,10 +87,9 @@ class Booking(object):
 
             cursor = cnx.cursor()
             cursor.execute(query_sql, query_data )
-
             row = cursor.fetchone()
-            username = row[0]
-            if username == self.UserId:
+
+            if row:
                 return True
             else:
                 return False
