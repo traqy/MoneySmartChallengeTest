@@ -99,10 +99,10 @@ cd docker/webapp
 
   * Show running containers
     ```
-CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
-1c2c4d782fd8        traqy/booking-miniapp-dataservice   "/bin/bash"              14 hours ago        Up 14 hours         0.0.0.0:5000->5000/tcp   booking-miniapp-dataservice
-949927845f28        traqy/booking-miniapp-mysql         "/root/scripts/run-my"   15 hours ago        Up About an hour    0.0.0.0:3306->3306/tcp   booking-miniapp-mysq  
-```
+CONTAINER ID        IMAGE                               COMMAND                  CREATED              STATUS              PORTS                    NAMES
+c3bef62ae0ee        traqy/booking-miniapp-nodejs        "/usr/src/app/start-n"   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   booking-miniapp-nodejs
+1c2c4d782fd8        traqy/booking-miniapp-dataservice   "/bin/bash"              16 hours ago         Up 16 hours         0.0.0.0:5000->5000/tcp   booking-miniapp-dataservice
+949927845f28        traqy/booking-miniapp-mysql         "/root/scripts/run-my"   17 hours ago         Up 2 hours          0.0.0.0:3306->3306/tcp   booking-miniapp-mysql```
 
 
 ## Dataservice RESTful-API Endpoints
