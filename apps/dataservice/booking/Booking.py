@@ -45,6 +45,7 @@ class Booking(object):
         self.HourlySlot = kwargs.get('HourlySlot')
         self.ReserveeId = kwargs.get('ReserveeId')
         self.ReserveeComment = kwargs.get('ReserveeComment')
+        self.UserId = kwargs.get('UserId')
 
 
         self.response = {}
@@ -79,24 +80,27 @@ class Booking(object):
     def getResponse(self):
         return self.response
 
-    def cancel(self, userid):
+    def cancel(self):
 
         cursor = cnx.cursor()
 
         try:
-            if self.isOwner(userid):
+
+            if self.isSlotAvailable():
+                self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'Slot is already available.' } }
+            elif self.isOwner():
                 query_data = {
                     'id' : self.id
                 }                
 
-                cancel_sql = ( " UPDATE Booking SET ReserveeId='', ReserveeComment='', status = 0 WHERE id = %(id)s" )        
-                cursor.execute(cancel_sql, query_data )
+                query_sql = ( " UPDATE Booking SET ReserveeId='', ReserveeComment='', status = 0 WHERE id = %(id)s" )        
+                cursor.execute(query_sql, query_data )
                 cnx.commit()
 
-                self.response = { 'cancel' : { 'status' : 'success' } }
+                self.response = { 'cancel' : {  'status' : 'success', 'id' : self.id } }
 
             else:
-                self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'Userid does not match ReserveeId.' } }
+                self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'Login Userid does not match ReserveeId.', 'id' : self.id } }
         except:
             self.response = { 'cancel' : { 'status' : 'failed' , 'message' : 'exception error encountered.' } }
         finally:
@@ -153,20 +157,24 @@ class Booking(object):
 
 
 
-    def isOwner(self, userid):
+    def isOwner(self):
 
-        retval = False        
         try:
 
-            is_owner_sql = ( "SELECT ReserveeId FROM Booking WHERE id = %(id)s AND ReserveeId = %(ReserveeId)s" )
+            query_sql = ( "SELECT ReserveeId FROM Booking WHERE id = %(id)s" )
             query_data = {
-                'id' : self.id,
-                'ReserveeId' : self.ReserveeId
+                'id' : self.id
             }
 
             cursor = cnx.cursor()
-            cursor.execute(is_owner_sql, query_data )
-            
+            cursor.execute(query_sql, query_data )
+
+            row = cursor.fetchone()
+            reservee_id = row[0]
+            if reservee_id == self.UserId:
+                return True
+            else:
+                return False
         except:
             self.error = traceback.print_exception()
             pass

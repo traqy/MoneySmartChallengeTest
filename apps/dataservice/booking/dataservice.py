@@ -13,7 +13,7 @@ from Booking import Booking
 api method to reserve a slot
 
 example curl:
-     curl -H 'Content-Type: application/json' -X PUT -d '{"Date" : "2016-08-18", "HourlySlot" : 7, "ReserveeId" : "usertest1", "ReserveeComment" : "Test Reserve comment" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/reserve
+     curl -s -H 'Content-Type: application/json' -X PUT -d '{"Date" : "2016-08-18", "HourlySlot" : 7, "ReserveeId" : "usertest1", "ReserveeComment" : "Test Reserve comment" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/reserve
 '''
 @app.route('/mini-app-booking-ds/api/user/reserve', methods=["PUT", "POST"])
 def reserve():
@@ -26,18 +26,19 @@ def reserve():
     
 
 '''
-api for canceling existing booking
+api method for canceling existing booking by the user
 
 example curl:
-    curl -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest1" , "id" : 1 }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/cancel
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest1" , "id" : 1 }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/cancel
 '''
 @app.route('/mini-app-booking-ds/api/user/cancel', methods=["PUT", "POST"])
 def cancel():
     content = cjson.decode(request.data)
-    booking = Booking( id = content.get('id') )
-    booking.cancel( content.get('Username') )
+    booking = Booking( id = content.get('id'), UserId = content.get('username'))
+    booking.cancel()
     json_retval = cjson.encode(booking.getResponse())
 
+    return json_retval
 
 '''
 Admin API for generating future date slots
