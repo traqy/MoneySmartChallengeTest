@@ -16,6 +16,15 @@ cnx = mysql.connector.connect(user=DBUSER, password=DBPASS,
                               host=DBHOST,
                               database='Booking')
 
+from datetime import timedelta, date, datetime
+
+def daterange(start_date, end_date):
+    retval = []
+    for n in range(int ((end_date - start_date).days)):
+         retval.append(start_date + timedelta(n))
+
+    return retval
+
 class Booking(object):
 
     # Data Structure
@@ -69,7 +78,7 @@ class Booking(object):
 
     def getResponse(self):
         return self.response
-        
+
     def cancel(self, userid):
 
         cursor = cnx.cursor()
@@ -97,6 +106,8 @@ class Booking(object):
     def viewBookingDateSlots(self):
 
         cursor = cnx.cursor()        
+
+        self.reserve = {}
         try:
             query_data = {
                 'Date' : self.Date
@@ -105,12 +116,12 @@ class Booking(object):
             cursor.execute(query_stmt, query_data )
             data = []
             for row in cursor:
-                row = { 'Date' : row[0], 'ReserveeId' : row[1], 'ReserveeComment' : row[2], 'Status' : row[3] }
-                data.append(row)
+                row_json = { 'Date' : self.Date, 'HourlySlot': row[1], 'ReserveeId' : row[2], 'ReserveeComment' : row[3], 'Status' : row[4] }
+                data.append(row_json)
 
             self.response = { 'viewBookingDateSlots' : { 'status' : 'ok' , 'data' : data } }
         except:
-            traceback.print_exc()
+            #traceback.print_exc()
             self.response = { 'viewBookingDateSlots' : { 'status' : 'error' , 'message' : 'exception error encountered.' } }
         finally:
             cursor.close()
@@ -159,6 +170,82 @@ class Booking(object):
         except:
             self.error = traceback.print_exception()
             pass
+
+    def isAdmin(self, userid):
+
+        retval = False        
+        try:
+
+            query_sql = ( "SELECT AccessLevel FROM User WHERE Username = %(userId)s" )
+            query_data = {
+                'userId' : userid
+            }
+
+            cursor = cnx.cursor()
+            cursor.execute(query_sql, query_data )
+            row = cursor.fetchone()
+            if row[0] == 2:
+                retval = True
+            
+        except:
+            retval = False
+            self.error = traceback.print_exception()
+            pass
+        finally:
+            return retval
+
+
+    def adminGenerateFutureDateHourlySlots(self, **kwargs):
+
+        userId = kwargs.get('userId')
+        dateFrom = kwargs.get('dateFrom')
+        dateTo = kwargs.get('dateTo')
+
+        retval = {}
+        try:
+            if self.isAdmin(userId):
+                dfrom = datetime.strptime(dateFrom, '%Y-%m-%d')
+                dto = datetime.strptime(dateTo, '%Y-%m-%d')
+
+                dnow = datetime.now()
+                if dfrom > dto:
+                    retval = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Invalid date range.' } }
+                elif dfrom <= dnow:
+                    retval = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Date from should be future date.' } }
+                else:
+                    cursor = cnx.cursor()
+        
+                    response_data = []
+                    for single_date in daterange(dfrom, dto):
+                        dateString = single_date.strftime("%Y-%m-%d")
+                        query_sql = ( "INSERT INTO Booking (Date, HourlySlot, Status) SELECT %(Date)s, HourlySlot, Status FROM BookingTemplate" )
+                        query_data = {
+                            'Date' : dateString
+                        }
+                        response_data_row = {}
+                        try:
+                            cursor.execute(query_sql, query_data )
+                            response_data_row = { dateString : { 'status' : 'success' } }
+                            cnx.commit()
+                        except:
+                            #print traceback.print_exc()
+                            response_data_row = { dateString : { 'status' : 'failed', 'message' : 'Exception error encountered.' } }
+                            pass
+                        finally:
+                            response_data.append(response_data_row)
+
+
+                    self.response = { 'adminGenerateFutureDateHourlySlots' : response_data }
+                    cursor.close()
+
+            else:
+                self.response = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'failed', 'message' : 'Permission denied.' } }
+        except:
+            self.error = traceback.print_exception()
+            self.response = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'failed', 'message' : 'Exception error encountered.' } }
+            pass
+
+
 
     @staticmethod
     def testping():

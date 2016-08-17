@@ -1,3 +1,3 @@
 #!/bin/bash
 
-mysql -u root < booking-structure.sql
+mysql -u root Booking < booking-structure.sql

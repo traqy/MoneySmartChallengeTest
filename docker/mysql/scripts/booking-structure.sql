@@ -24,9 +24,13 @@ CREATE TABLE IF NOT EXISTS `Booking`.`BookingTemplate` (
     PRIMARY KEY (`HourlySlot`)
 );
 
-INSERT INTO `Booking`.`BookingTemplate` (`HourlySlot`,`Status`) VALUES (7,0), (8,0), (9,0), (10,0), (11,0), (12,0),(13,0), (14,0), (15,0), (16,0), (17,0), (18,0), (19,0), (20,0), (21,0), (22,0), (23,0);
+INSERT INTO `Booking`.`BookingTemplate` (`HourlySlot`,`Status`) VALUES (1,-1),(2,-1),(3,-1),(4,-1),(5,-1),(6,-1),(7,0), (8,0), (9,0), (10,0), (11,0), (12,0),(13,0), (14,0), (15,0), (16,0), (17,0), (18,0), (19,0), (20,0), (21,0), (22,0), (23,0);
 
 
+# 0 - Anonymous
+# 1 - Registered User
+# 2 - Admin
+DROP TABLE IF EXISTS `Booking`.`User`;
 CREATE TABLE IF NOT EXISTS `Booking`.`User`(
     `id` INT(14) NOT NULL auto_increment,
     `Username` varchar(100) DEFAULT NULL,
@@ -36,3 +40,6 @@ CREATE TABLE IF NOT EXISTS `Booking`.`User`(
     UNIQUE KEY `ix_username` (`username`),
     INDEX `AccessLevel` (`AccessLevel`)
 );
+
+INSERT INTO `Booking`.`User` (`Username`, `AccessLevel`) VALUES ('admin', 2)
+
