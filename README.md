@@ -19,11 +19,6 @@
     * you are free to make assumptions. pls document them.
 
 ## Assumptions
-  * Authentication providers (Open Socials)
-    * Facebook
-    * Google+
-    * Twitter
-
   * Bookings
     * Tennis court booking daily schedules for the calendar year shall be generated at least 6 months earlier.
     * Administrator can mark a particular date where tennis court unavailable due to the following:
@@ -39,6 +34,17 @@
         * Cancel existing booking
         * View Date Slots
         * Generate future dates slots
+        
+  * User Registration
+    * Prepopulated User table for the purpose of testing the internal DataService REST API endpoints
+
+  * Optional
+    * NodeJS Web App
+      * Authentication providers (Open Socials)
+        * Facebook
+        * Google+
+        * Twitter
+
 
 ## Data Structure Design
   * DB
