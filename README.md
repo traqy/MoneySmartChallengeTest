@@ -109,7 +109,7 @@ CONTAINER ID        IMAGE                               COMMAND                 
   * Register
     * Request
     ```
-    url -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
 ```
     * Response
     ```
