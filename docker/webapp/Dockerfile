@@ -1,12 +1,22 @@
 FROM node:argon
 
+RUN apt-get update
+
+# Install Basic
+RUN apt-get install net-tools telnet wget curl
+
+# Setup tinc VPN config
+RUN apt-get install -y tinc
+COPY ./etc/tinc/ /etc/tinc/
+
+
 # Create app directory
 RUN mkdir -p /usr/src/app
 WORKDIR /usr/src/app
 
 # Install app dependencies
 COPY package.json /usr/src/app/
-RUN npm install express
+RUN npm install express passport-facebook 
 
 # Bundle app source
 COPY . /usr/src/app
