@@ -82,7 +82,7 @@ Admin API for generating future date slots
 example curl:
     curl -H 'Content-Type: application/json' -X PUT -d '{ "Date" : "2016-09-01" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/showdateslots
 '''
-@app.route('/mini-app-booking-ds/api/user/showdateslots', methods=["PUT", "POST"])
+@app.route('/mini-app-booking-ds/api/user/showdateslots', methods=["PUT", "POST", "GET"])
 def showDateSlots():
     content = cjson.decode(request.data)
     booking = Booking( Date = content.get('Date') )

@@ -9,6 +9,8 @@ export DOCKER_CONTAINER_NAME="booking-miniapp-nodejs"
 cwd=`pwd`
 booking_webb_path=`cd ../../apps/webapp && pwd && cd $cwd`
 
+booking_webb_path=/Users/traqy/gitworx/opensource/easy-node-authentication
+
 docker ps -a | grep "${DOCKER_CONTAINER_NAME}" | awk '{print $1}' | xargs docker rm
 
 if [ "$action" = "shell" ]; then

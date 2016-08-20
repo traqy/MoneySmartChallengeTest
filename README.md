@@ -39,11 +39,9 @@
     * Prepopulated User table for the purpose of testing the internal DataService REST API endpoints
 
   * Optional
-    * NodeJS Web App
-      * Authentication providers (Open Socials)
-        * Facebook
-        * Google+
-        * Twitter
+    * NodeJS Server-Side Web App
+      * Support for local sign-up
+      * Support for Facebook Login
 
 
 ## Data Structure Design
