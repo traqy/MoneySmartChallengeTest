@@ -31,7 +31,7 @@ class Booking(object):
     # * id - primary key ( Unique record for tennis court date schedule )
     # * Date - (Unique date)
     # * HourlySlot - Hourly slot
-    # * ReserveeId - User who reserved the slot (e.g. Fabebook, Google, Twitter, etc)
+    # * ReserveeId - Local Sign-Up
     # * ReserveeComment - Additional details of the users.
     # * Status - (1 - Reserved, 0 - Available, -1 -Closed )
     # * Tstamp - datetime record updated
@@ -46,6 +46,10 @@ class Booking(object):
         self.ReserveeId = kwargs.get('ReserveeId')
         self.ReserveeComment = kwargs.get('ReserveeComment')
         self.UserId = kwargs.get('UserId')
+        self.Password = kwargs.get('Password')
+        self.FirstName = kwargs.get('FirstName')
+        self.LastName = kwargs.get('LastName')
+        self.Status = kwargs.get('Status')
 
 
         self.response = {}
@@ -75,9 +79,43 @@ class Booking(object):
 
         cursor.close()
 
+    def register_latest(self):
+        cursor = cnx.cursor()
+
+        if self.isRegistered():
+            message = "{0} is already registered.".format(self.UserId)
+            self.response = { 'register' : { 'status' : 'failed', 'message' : message } }
+        elif not self.Password:
+            message = "Password is empty."
+            self.response = { 'register' : { 'status' : 'failed', 'message' : message } }
+        elif len(self.Password) < 8:
+            message = "Password is too short. Password should be at least 8 characters."
+            self.response = { 'register' : { 'status' : 'failed', 'message' : message } }
+        else:
+            try:
+                query_sql = ( "INSERT INTO User (Username, Password, Firstname, Lastname, Status, AccessLevel) VALUES (%(UserId)s,%(Password)s, %(FirstName)s,%(LastName)s, 1, 1)" )
+                query_data = {
+                    'UserId' : self.UserId,
+                    'Password' : self.Password,
+                    'FirstName' : self.FirstName,
+                    'LastName' : self.LastName,
+                    'Status' : self.Status,
+                }
+                cursor = cnx.cursor()
+                cursor.execute(query_sql, query_data )
+                cnx.commit()
+                message = "User {0} is successfully registered.".format(self.UserId)
+                self.response = { 'register' : { 'status' : 'success', 'message' : message } }
+            except:
+                traceback.print_exc()
+                self.response = { 'register' : { 'status' : 'failed', 'message' : 'Exception error encountered.' } }
+
+        cursor.close()
+
     def isRegistered(self):
         cursor = cnx.cursor()
 
+        retval = False
         try:
 
             query_sql = ( "SELECT Username FROM User WHERE Username = %(UserId)s" )
@@ -90,14 +128,42 @@ class Booking(object):
             row = cursor.fetchone()
 
             if row:
-                return True
+                retval = True
             else:
-                return False
+                retval = False
         except:
             self.error = traceback.print_exception()
             pass
-        cursor.close()
+        finally:
+            cursor.close()
+            return retval
 
+    def login(self):
+        cursor = cnx.cursor()
+
+        try:
+
+            query_sql = ( "SELECT Password FROM User WHERE Username = %(UserId)s " )
+            query_data = {
+                'UserId' : self.UserId
+            }
+
+            cursor = cnx.cursor()
+            cursor.execute(query_sql, query_data )
+            row = cursor.fetchone()
+
+            if row is None:
+                self.response = { 'login' : { 'status' : 'failed', 'message' : "UserId not registered. Please sign up." } }
+            elif row[0] == self.Password:
+                self.response = { 'login' : { 'status' : 'ok', 'message' : "Login succeeded." , 'sessionid' : "todo" } }
+            else:
+                self.response = { 'login' : { 'status' : 'failed', 'message' : "Login failed." } }
+        except:
+            #self.error = traceback.print_exception()
+            self.response = { 'login' : { 'status' : 'failed', 'message' : "Internal Server Error." } }
+            pass
+        finally:
+            cursor.close()
 
     def reserve(self):
 

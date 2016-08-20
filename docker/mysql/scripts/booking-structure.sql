@@ -34,12 +34,16 @@ DROP TABLE IF EXISTS `Booking`.`User`;
 CREATE TABLE IF NOT EXISTS `Booking`.`User`(
     `id` INT(14) NOT NULL auto_increment,
     `Username` varchar(100) DEFAULT NULL,
+    `Password` varchar(100) DEFAULT NULL,
+    `Lastname` varchar(100) DEFAULT NULL,
+    `Firstname` varchar(100) DEFAULT NULL,
     `AccessLevel` TINYINT(1) DEFAULT 0,
+    `Status`  TINYINT(1) DEFAULT 0,
     tstamp TIMESTAMP,
     PRIMARY KEY (`id`),
     UNIQUE KEY `ix_username` (`username`),
     INDEX `AccessLevel` (`AccessLevel`)
 );
 
-INSERT INTO `Booking`.`User` (`Username`, `AccessLevel`) VALUES ('admin', 2)
+INSERT INTO `Booking`.`User` (`Username`, `Password`, `Firstname`, `Lastname`, `AccessLevel`, `Status`) VALUES ('admin','ten20304050', 'Admin', 'Admin', 2, 1);
 

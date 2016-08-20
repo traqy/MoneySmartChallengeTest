@@ -16,7 +16,26 @@ class Booking_model extends CI_Model
         return $result;
     }
 
-    public function api_booking_rest_call($urlpath, $method, $payload){
+    public function register($email, $password, $firstname, $lastname){
+        $rest_url_path = "user/registerlatest";
+        $method = "POST";
+        $payload = json_encode( array( "UserId" => $email, "Password" => $password, "FirstName" => $firstname, "LastName" => $lastname ) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+    }
+
+    public function login($email, $password){
+
+        $rest_url_path = "user/login";
+        $method = "POST";
+        $payload = json_encode( array( "UserId" => $email, "Password" => $password ) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+        
+    }
+
+
+    private function api_booking_rest_call($urlpath, $method, $payload){
 
         /*
             urlpath - '/user/showdateslots'
@@ -38,6 +57,8 @@ class Booking_model extends CI_Model
         #echo "<pre>$result</pre>";        
         return $result;
     }
+
+
 }
 
 ?>

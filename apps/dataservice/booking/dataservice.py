@@ -13,6 +13,22 @@ from Booking import Booking
 api method for registering or adding user
 
 example curl
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "btraquena@gmail.com" , "Password" : "123432" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/login
+'''
+@app.route('/mini-app-booking-ds/api/user/login', methods=["PUT", "POST"])
+def login():
+    content = cjson.decode(request.data)
+    booking = Booking( UserId = content.get('UserId'), Password = content.get('Password') )
+    booking.login()
+    json_retval = cjson.encode(booking.getResponse())
+
+    return json_retval
+
+
+'''
+api method for registering or adding user
+
+example curl
     curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
 '''
 @app.route('/mini-app-booking-ds/api/user/register', methods=["PUT", "POST"])
@@ -23,6 +39,23 @@ def register():
     json_retval = cjson.encode(booking.getResponse())
 
     return json_retval
+
+
+'''
+api method for registering or adding user
+
+example curl
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "usertest2" , "Password" : "123456789"}' http://192.168.99.100:5000/mini-app-booking-ds/api/user/registerlatest
+'''
+@app.route('/mini-app-booking-ds/api/user/registerlatest', methods=["PUT", "POST"])
+def registerlatest():
+    content = cjson.decode(request.data)
+    booking = Booking( UserId = content.get('UserId'), Password = content.get('Password'), FirstName = content.get('FirstName'), LastName = content.get('LastName'), Status = 1 )
+    booking.register_latest()
+    json_retval = cjson.encode(booking.getResponse())
+
+    return json_retval
+
 
 
 '''
