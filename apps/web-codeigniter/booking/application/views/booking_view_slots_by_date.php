@@ -20,10 +20,13 @@
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
   <script>
 
-  $(function() {
+  var dateToday = new Date(); 
+
+  $(function() {    
    $('#date').removeClass('hasDatepicker');
    $('#date').datepicker({
        dateFormat: 'yy-mm-dd',
+       minDate: dateToday,
        onSelect: function(dateText, inst) {
            $(this).parent('frmDate').submit();
        }
@@ -37,12 +40,12 @@
 echo "Email: $session_email";
 ?>
 
-<div>
+<!-- <div>
 <form id="frmDate" action="../logout">
     <input type='submit' name='Logout' value='Logout' />
 </form>
- </div>
-
+</div>
+ -->
 
 <?php if (isset($message)) {echo "$message";} ?>
 <div>
