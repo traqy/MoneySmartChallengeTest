@@ -4,14 +4,14 @@
 
 ## Technology Stack
   * Applications
+    * HaProxy - Load Balancer
     * Python - Backend Data Service
-    * NodeJS - Web Front-End UI
+    * Web UI Server Side (PHP5 Codeigniter Framework)
   * Data Store
     * MySQL
 
 ## Architectural Diagram
-  * Underconstruction
-  * NodeJS Web Service <-> Data Service REST API <-> MySQL Data Store
+  * HAProxy Load Balancer <-> PHP Web Service(CodeIgniter) <-> Data Service REST API <-> MySQL Data Store
 
 ## Requirements
   * Write a mini application for Tennis court booking. 
@@ -36,13 +36,7 @@
         * Generate future dates slots
 
   * User Registration
-    * Prepopulated User table for the purpose of testing the internal DataService REST API endpoints
-
-  * Optional
-    * NodeJS Server-Side Web App
-      * Support for local sign-up
-      * Support for Facebook Login
-
+    * Local Sign Up registration
 
 ## Data Structure Design
   * DB
@@ -58,7 +52,9 @@
       * Hour - Hourly slot
     * User
       * id - primary key
-      * Username - User who reserved the slot (e.g. Fabebook, Google, Twitter, etc)
+      * Username - Email address
+      * Firstname
+      * Lastname
       * AccessLevel - Level of access to the application. (0 - Anonymous, 1 - Registered Users, 2 - Admin)
       * tstamp - datetime record updated
 
@@ -94,7 +90,6 @@ cd docker/mysql
 cd docker/webapp
 ./run.sh
 ```
-
   * Show running containers
     ```
 CONTAINER ID        IMAGE                               COMMAND                  CREATED              STATUS              PORTS                    NAMES
@@ -179,3 +174,13 @@ curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "d
     ```
 {"adminGenerateFutureDateHourlySlots": [{"2016-08-25": {"status": "success"}}, {"2016-08-26": {"status": "success"}}, {"2016-08-27": {"status": "success"}}, {"2016-08-28": {"status": "success"}}, {"2016-08-29": {"status": "success"}}, {"2016-08-30": {"status": "success"}}]}root@1c2c4d782fd8:~/apps/dataservice/booking
 ```
+
+
+## Access Web UI
+  * Edit your /etc/hosts
+  ```
+  192.168.99.100 booking.techtest-moneysmart.com
+```
+  * Browse http://booking.techtest-moneysmart.com/index.php/booking/login
+
+
