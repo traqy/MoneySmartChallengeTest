@@ -6,7 +6,7 @@ class Hello extends CI_Controller {
         echo "This is my index function.";
     }
 
-    public function one($name) {
+    public function one($name=NULL) {
 
         $this->load->model("hello_model");
 

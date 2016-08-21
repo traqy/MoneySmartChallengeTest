@@ -143,7 +143,7 @@ class Booking(object):
 
         try:
 
-            query_sql = ( "SELECT Password FROM User WHERE Username = %(UserId)s " )
+            query_sql = ( "SELECT Password, AccessLevel FROM User WHERE Username = %(UserId)s " )
             query_data = {
                 'UserId' : self.UserId
             }
@@ -155,7 +155,8 @@ class Booking(object):
             if row is None:
                 self.response = { 'login' : { 'status' : 'failed', 'message' : "UserId not registered. Please sign up." } }
             elif row[0] == self.Password:
-                self.response = { 'login' : { 'status' : 'ok', 'message' : "Login succeeded." , 'sessionid' : "todo" } }
+                access_level = row[1]
+                self.response = { 'login' : { 'status' : 'ok', 'message' : "Login succeeded." , 'sessionid' : "todo", "access_level" : access_level } }
             else:
                 self.response = { 'login' : { 'status' : 'failed', 'message' : "Login failed." } }
         except:
@@ -425,11 +426,12 @@ class Booking(object):
                         response_data_row = {}
                         try:
                             cursor.execute(query_sql, query_data )
-                            response_data_row = { dateString : { 'status' : 'success' } }
+                            response_data_row = {  'date' : dateString, 'status' : 'success',  'message' : 'Records hour slots are generated.'  } 
                             cnx.commit()
                         except:
-                            #print traceback.print_exc()
-                            response_data_row = { dateString : { 'status' : 'failed', 'message' : 'Exception error encountered.' } }
+                            cnx.rollback()
+                            print traceback.print_exc()
+                            response_data_row = { 'date' : dateString, 'status' : 'failed', 'message' : 'Exception error encountered.' }
                             pass
                         finally:
                             response_data.append(response_data_row)

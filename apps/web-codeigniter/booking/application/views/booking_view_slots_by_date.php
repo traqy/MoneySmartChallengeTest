@@ -72,7 +72,7 @@ echo "Email: $session_email";
         $array_data = $jo['viewBookingDateSlots']['data'];
 
         $array_status = array( 0 => 'Available', 1 => 'Taken', -1 => 'Closed');
-        foreach ($array_data as &$slot ) {
+        foreach ($array_data as $slot ) {
             $hourly_slot = $slot['HourlySlot'];
             $hourly_display = $hour_label_map[$hourly_slot];
             $reservee_id = $slot['ReserveeId'];
@@ -104,6 +104,7 @@ echo "Email: $session_email";
 <div>
 <a href="../home">Home</a>
 <a href="../logout">Logout</a>
+<?php if ($access_level == 2){ anchor('Admin/manage','Admin');} ?>
 </div>
 
 </body>

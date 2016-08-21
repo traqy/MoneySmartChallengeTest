@@ -45,6 +45,7 @@ echo "Email: $session_email";
 <div>
 <a href="../home">Home</a>
 <a href="logout">Logout</a>
+<?php if ($access_level == 2){ echo '<a href="../adminbooking/manage">Admin</a>';} ?>
 </div>
 
 </body>

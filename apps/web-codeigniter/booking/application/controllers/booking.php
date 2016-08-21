@@ -25,7 +25,10 @@ class Booking extends CI_Controller {
             }
         }
         else{
+            $access_level = $this->session->userdata('access_level');
+
             $data['session_email'] = $session_email;
+            $data['access_level'] = $access_level;
         
             $date = $this->input->post('date');
             $this->load->model("booking_model","model");
@@ -135,7 +138,12 @@ class Booking extends CI_Controller {
             }else{
 
                 $this->load->library('session');
+
+                $access_level =  $jo['login']['access_level'];
+
                 $this->session->set_userdata('session_email', $email);
+                $this->session->set_userdata('access_level', $access_level);
+
                 $this->home();
             }
         }
