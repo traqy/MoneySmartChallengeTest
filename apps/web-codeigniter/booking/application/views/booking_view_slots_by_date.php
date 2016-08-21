@@ -33,13 +33,25 @@
 </head>
 <body>
 
-<?php if (isset($message)) {echo "$message";} ?>
+<?php
+echo "Email: $session_email";
+?>
 
+<div>
+<form id="frmDate" action="../logout">
+    <input type='submit' name='Logout' value='Logout' />
+</form>
+ </div>
+
+
+<?php if (isset($message)) {echo "$message";} ?>
+<div>
 <form id="frmDate" action="viewSlotsByDate" method="post">
     <p>Date: <input type="text" id="date" name="date"></p>
     <input type='submit' name='Submit' value='Show' />
 </form>
- 
+ </div>
+ <div>
  <table>
  <tr>
  <td>Hour</td>
@@ -83,5 +95,12 @@
   ?>
 
   </table>
+  </div>
+
+<div>
+<a href="../home">Home</a>
+<a href="../logout">Logout</a>
+</div>
+
 </body>
 </html>

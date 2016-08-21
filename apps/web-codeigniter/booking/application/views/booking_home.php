@@ -31,15 +31,18 @@
   </script>
 </head>
 <body>
-
- <form id="frmDate" action="viewSlotsByDate" method="post">
-    <p>Date: <input type="text" id="date" name="date"></p>
+<?php
+echo "Email: $session_email";
+?>
+ <form id="frmDate" action="home/viewSlotsByDate" method="post">
+    <p>Pick Date: <input type="text" id="date" name="date"></p>
     <input type='submit' name='Submit' value='Show' />
 </form>
 
- <?php 
- if (isset($date_slots)){ echo "JSON Data: $date_slots"; }
- ?>
+<div>
+<a href="../home">Home</a>
+<a href="logout">Logout</a>
+</div>
 
 </body>
 </html>

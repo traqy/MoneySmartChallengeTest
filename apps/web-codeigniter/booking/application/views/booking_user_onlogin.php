@@ -15,7 +15,6 @@
     <br><br>
     <input type='submit' name='Submit' value='Login' />
   </form>
-  <button ng-click="reset()">RESET</button>
 </div>
 
 <script>
@@ -28,6 +27,10 @@ app.controller('formCtrl', function($scope) {
     $scope.reset();
 });
 </script>
+
+<div>
+<a href="signup">Sign Up</a>
+</div>
 
 </body>
 </html>

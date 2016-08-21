@@ -17,12 +17,16 @@ example curl
 '''
 @app.route('/mini-app-booking-ds/api/user/login', methods=["PUT", "POST"])
 def login():
-    content = cjson.decode(request.data)
-    booking = Booking( UserId = content.get('UserId'), Password = content.get('Password') )
-    booking.login()
-    json_retval = cjson.encode(booking.getResponse())
+    try:
+        content = cjson.decode(request.data)
+        booking = Booking( UserId = content.get('UserId'), Password = content.get('Password') )
+        booking.login()
+        json_retval = cjson.encode(booking.getResponse())
 
-    return json_retval
+        return json_retval
+    except:
+        pass
+        return ""
 
 
 '''

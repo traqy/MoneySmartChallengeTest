@@ -36,6 +36,7 @@ $config['base_url'] = '';
 |
 */
 $config['index_page'] = 'index.php';
+#$config['index_page'] = '';
 
 /*
 |--------------------------------------------------------------------------
@@ -518,6 +519,6 @@ $config['proxy_ips'] = '';
 | Booking REST API settings
 |--------------------------------------------------------------------------
 */
-$config['booking_url'] = 'http://192.168.99.100:5000/mini-app-booking-ds/api';
+$config['booking'] = 'http://192.168.99.100:5000/mini-app-booking-ds/api';
 
 

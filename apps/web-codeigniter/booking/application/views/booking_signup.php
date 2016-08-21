@@ -32,5 +32,9 @@ app.controller('formCtrl', function($scope) {
 });
 </script>
 
+<div>
+<a href="login">Back To Login</a>
+</div>
+
 </body>
 </html>
