@@ -28,7 +28,7 @@
        dateFormat: 'yy-mm-dd',
        minDate: dateToday,
        onSelect: function(dateText, inst) {
-           $(this).parent('frmDate').submit();
+           $('#frmDate').submit();
        }
    });
 });
@@ -51,11 +51,12 @@ echo "Email: $session_email";
 <div>
 <form id="frmDate" action="viewSlotsByDate" method="post">
     <p>Date: <input type="text" id="date" name="date"></p>
-    <input type='submit' name='Submit' value='Show' />
+    <input type='hidden' name='Submit' value='Show' />
 </form>
  </div>
  <div>
  <table>
+ <tr><td><?php if (isset($date)){ echo $date; } ?></td></tr>
  <tr>
  <td>Hour</td>
  <td>Reservee</td>
@@ -69,18 +70,18 @@ echo "Email: $session_email";
     else{
         $jo = json_decode(trim($date_slots),TRUE);
         $array_data = $jo['viewBookingDateSlots']['data'];
-        //var_dump($array_data);
 
         $array_status = array( 0 => 'Available', 1 => 'Taken', -1 => 'Closed');
         foreach ($array_data as &$slot ) {
             $hourly_slot = $slot['HourlySlot'];
+            $hourly_display = $hour_label_map[$hourly_slot];
             $reservee_id = $slot['ReserveeId'];
             $reservee_comment = $slot['ReserveeComment'];
             $status =  $slot['Status'];
             $status_label = $array_status[$status];
             echo "<tr>";
             echo "<form action='reserveForm' method='post'><input type='hidden' value='$date' name='date' id='date'><input type='hidden' value='$hourly_slot' name='hourly_slot' id='hourly_slot'><input type='hidden' value='$reservee_id' name='reservee_id' id='reservee_id'>";
-            echo "<td>$hourly_slot</td>";
+            echo "<td>$hourly_display</td>";
             echo "<td>$reservee_id</td>";
             echo "<td>$reservee_comment</td>";
             echo "<td>$status_label</td>";

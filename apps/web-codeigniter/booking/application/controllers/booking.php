@@ -1,12 +1,14 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
+require_once(APPPATH.'libraries/utils.php');
+
 class Booking extends CI_Controller {
+
 
     public function index() {
         $this->home();
     }
-
 
     public function home($method=NULL){
 
@@ -28,6 +30,7 @@ class Booking extends CI_Controller {
             $date = $this->input->post('date');
             $this->load->model("booking_model","model");
 
+            $data['hour_label_map'] = Utils::getHourLabelMapping();
 
             if ( $method == 'viewSlotsByDate' ) {
 

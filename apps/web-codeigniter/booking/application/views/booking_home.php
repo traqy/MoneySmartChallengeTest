@@ -27,7 +27,7 @@
        dateFormat: 'yy-mm-dd',
        minDate: dateToday,
        onSelect: function(dateText, inst) {
-           $(this).parent('frmDate').submit();
+           $('#frmDate').submit();
        }
    });
 });
@@ -39,7 +39,7 @@ echo "Email: $session_email";
 ?>
  <form id="frmDate" action="home/viewSlotsByDate" method="post">
     <p>Pick Date: <input type="text" id="date" name="date"></p>
-    <input type='submit' name='Submit' value='Show' />
+    <input type='hidden' name='Submit' value='Show' />
 </form>
 
 <div>
