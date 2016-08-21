@@ -68,7 +68,7 @@ echo "Email: $session_email";
         $array_data = $jo['viewBookingDateSlots']['data'];
         //var_dump($array_data);
 
-        $array_status = array( 0 => 'Available', 1 => 'Taken', 2 => 'Closed');
+        $array_status = array( 0 => 'Available', 1 => 'Taken', -1 => 'Closed');
         foreach ($array_data as &$slot ) {
             $hourly_slot = $slot['HourlySlot'];
             $reservee_id = $slot['ReserveeId'];

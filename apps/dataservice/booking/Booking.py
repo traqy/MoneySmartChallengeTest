@@ -409,9 +409,9 @@ class Booking(object):
 
                 dnow = datetime.now()
                 if dfrom > dto:
-                    retval = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Invalid date range.' } }
+                    self.response = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Invalid date range.' } }
                 elif dfrom <= dnow:
-                    retval = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Date from should be future date.' } }
+                    self.response = { 'adminGenerateFutureDateHourlySlots' : {'status' : 'error', 'message' : 'Date from should be future date.' } }
                 else:
                     cursor = cnx.cursor()
         
