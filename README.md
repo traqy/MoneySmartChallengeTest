@@ -87,15 +87,16 @@ cd docker/mysql
 ```
     * Web Server - NodeJS webapp service ( http://192.168.99.100:8080/ )
     ```
-cd docker/webapp
+cd docker/web-codeigniter
 ./run.sh
 ```
   * Show running containers
     ```
-CONTAINER ID        IMAGE                               COMMAND                  CREATED              STATUS              PORTS                    NAMES
-c3bef62ae0ee        traqy/booking-miniapp-nodejs        "/usr/src/app/start-n"   About a minute ago   Up About a minute   0.0.0.0:8080->8080/tcp   booking-miniapp-nodejs
-1c2c4d782fd8        traqy/booking-miniapp-dataservice   "/bin/bash"              16 hours ago         Up 16 hours         0.0.0.0:5000->5000/tcp   booking-miniapp-dataservice
-949927845f28        traqy/booking-miniapp-mysql         "/root/scripts/run-my"   17 hours ago         Up 2 hours          0.0.0.0:3306->3306/tcp   booking-miniapp-mysql
+CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
+bb8dd8192c69        3d4c64ef8262                        "/bin/sh -c 'apt-get "   24 seconds ago      Up 23 seconds       80/tcp                   fervent_torvalds
+ac17fcf4134a        traqy/booking-miniapp-dataservice   "/bin/bash"              12 hours ago        Up 12 hours         0.0.0.0:5000->5000/tcp   booking-miniapp-dataservice
+1975e3ab8757        traqy/booking-miniapp-web-ci        "/bin/bash"              19 hours ago        Up 19 hours         0.0.0.0:80->80/tcp       booking-miniapp-web-ci
+949927845f28        traqy/booking-miniapp-mysql         "/root/scripts/run-my"   4 days ago          Up 22 hours         0.0.0.0:3306->3306/tcp   booking-miniapp-mysql
 ```
 
 
@@ -178,8 +179,13 @@ curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "d
 
 ## Access Web UI
   * Edit your /etc/hosts
+    * AWS EC2 Haproxy Public facing load balancer
   ```
-  192.168.99.100 booking.techtest-moneysmart.com
+52.221.248.211 booking.techtest-moneysmart.com  
+```
+    * If you do not want to use public facing IP loadbalancer
+  ```
+192.168.99.100 booking.techtest-moneysmart.com
 ```
   * Browse http://booking.techtest-moneysmart.com/index.php/booking/login
 

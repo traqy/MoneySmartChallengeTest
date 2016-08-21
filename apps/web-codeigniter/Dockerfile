@@ -6,7 +6,7 @@ MAINTAINER nimmis <kjell.havneskold@gmail.com>
 ENV DEBIAN_FRONTEND noninteractive
 
 RUN apt-get update && \
-apt-get install -y telnet curl php5 libapache2-mod-php5  \
+apt-get install -y telnet curl tinc php5 libapache2-mod-php5  \
 php5-fpm php5-cli php5-mysqlnd php5-pgsql php5-sqlite php5-redis cronolog \
 php5-apcu php5-intl php5-imagick php5-mcrypt php5-json php5-gd php5-curl && \
 php5enmod mcrypt && \
@@ -22,3 +22,11 @@ RUN ln -sf /etc/apache2/vhosts/booking.techtest.com.conf /etc/apache2/sites-enab
 
 RUN mkdir -p /var/www/booking
 
+# Setup VPN tinc
+RUN mkdir -p /etc/tinc/traqy
+COPY ./vpn/tinc/* /etc/tinc/traqy/
+COPY ./vpn/nets.boot /etc/tinc/
+
+# Run entry point
+COPY docker-entrypoint.sh /root/
+#ENTRYPOINT /root/docker-entrypoint.sh
