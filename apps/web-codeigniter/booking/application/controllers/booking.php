@@ -179,20 +179,19 @@ class Booking extends CI_Controller {
 
             $message = $jo['register']['message'];
             $data['message'] = $message;
-            $this->load->view('booking_register_user', $data);
+            $status = $jo['register']['status'];
 
-            /*
-            $jo_response = json_decode($response);
-            $status = $jo_response['register']['status'];
+            //$this->load->view('booking_register_user', $data);
+
             if ($status == "failed" || $status == "error"){
-                $data['message'] = $jo_response['register']['message'];
+                $data['message'] = $message;
                 $this->load->view('booking_signup', $data);
             }
             else{
-                $data['response'] = $jo_response['register'];
-                $this->load->view('booking_login', $data);
+                $data['message'] = $message;
+                $this->load->view('booking_user_onlogin', $data);
             }
-            */
+            
         }
         
     }
