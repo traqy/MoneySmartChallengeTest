@@ -6,8 +6,59 @@ class Booking extends CI_Controller {
 
     }
 
-    public function home(){
-        $this->load->view('booking_home');
+
+    public function home($method=NULL){
+
+        $date = $this->input->post('date');
+
+        $this->load->model("booking_model","model");
+
+        if ( $method == 'viewSlotsByDate' ) {
+
+            $data['date'] = $date;
+            if (!empty($date)){
+                $data['date'] = $date;
+                $data['date_slots'] = $this->model->viewSlotByDate($date);
+                $this->load->view('booking_view_slots_by_date',$data);
+            }
+        }
+        elseif ( $method == 'reserveForm' ) {
+            $hourly_slot = $this->input->post('hourly_slot');
+            $reservee_id = $this->input->post('reservee_id');
+
+            $data['date'] = $date;
+            $data['hourly_slot'] = $hourly_slot;
+            $data['reservee_id'] = $reservee_id;
+            $this->load->view('booking_reserve_slot_form', $data);
+        }
+        elseif ( $method == 'reserveSlot' ) {
+            $hourly_slot = $this->input->post('hourly_slot');
+            $reservee_id = $this->input->post('reservee_id');
+            $reservee_comment = $this->input->post('reservee_comment');
+
+            $this->load->model("booking_model","model");
+            $response = $this->model->reserveSlot($date, $hourly_slot,$reservee_id, $reservee_comment);
+            //var_dump($response);
+
+            $jo = json_decode(trim($response),TRUE);
+            $status = $jo['reserveByDateSlot']['status'];
+            if ($status == 'success'){
+                $data['message'] = "You have successfully booked slot $date:$hourly_slot.";
+                $this->load->view('booking_view_slots_by_date',$data);
+            }
+            else{
+                $data['date'] = $date;
+                $data['hourly_slot'] = $hourly_slot;
+                $data['reservee_id'] = $reservee_id;
+                $status_message =  $jo['reserveByDateSlot']['message'];
+                $data['message'] = "$date:$hourly_slot: $status_message";
+                //$this->load->view('booking_reserve_slot_form', $data);
+                $this->load->view('booking_view_slots_by_date',$data);
+            }
+        
+        }else{
+            $this->load->view('booking_home');
+        }
     }
     public function onlogin(){
         $email = $this->input->post('email');
@@ -106,22 +157,6 @@ class Booking extends CI_Controller {
             */
         }
         
-    }
-
-    public function view($p_type, $date) {
-
-        $this->load->model("booking_model","model");
-
-        if ( $p_type == 'viewSlotByDate' ) {
-
-            $data['date'] = $date;
-            $data['date_slots'] = $this->model->viewSlotByDate($date);
-
-            $this->load->view('booking_view_by_date_slots',$data);
-        }
-        else{
-            echo "TODO";
-        }
     }
 
     public function signup(){

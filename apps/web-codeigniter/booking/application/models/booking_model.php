@@ -34,6 +34,16 @@ class Booking_model extends CI_Model
         
     }
 
+    public function reserveSlot($date, $hourly_slot, $reservee_id, $reservee_comment){
+
+        $rest_url_path = "user/reservebydateslot";
+        $method = "POST";
+        $payload = json_encode( array( "Date" => $date, "HourlySlot" => $hourly_slot, "ReserveeId" => $reservee_id, "ReserveeComment" => $reservee_comment) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+
+    }
+
 
     private function api_booking_rest_call($urlpath, $method, $payload){
 

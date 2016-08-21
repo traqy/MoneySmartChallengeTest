@@ -192,6 +192,33 @@ class Booking(object):
             self.response = { 'reserve' : { 'status' : 'failed', 'message' : 'Slot is not available.' } }
 
 
+    def reserveByDateSlot(self):
+
+        if self.isDateSlotAvailable():
+
+            cursor = cnx.cursor()
+            try:
+                query_data = {
+                    'Date' : self.Date,
+                    'HourlySlot' : self.HourlySlot,
+                    'ReserveeId' : self.ReserveeId,
+                    'ReserveeComment' : self.ReserveeComment,
+                }
+                reserve_booking_sql = ( " UPDATE Booking SET ReserveeId=%(ReserveeId)s, ReserveeComment=%(ReserveeComment)s, Status=1 WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s" )        
+
+                cursor.execute(reserve_booking_sql, query_data )
+                cnx.commit()
+
+                self.response = { 'reserveByDateSlot' : { 'status' : 'success' } }
+            except:
+                self.error = traceback.print_exception()
+                self.response = { 'reserveByDateSlot' : { 'status' : 'failed' , 'message' : 'exception error encountered.' } }
+                pass
+            finally:
+                cursor.close()
+        else:
+            self.response = { 'reserveByDateSlot' : { 'status' : 'failed', 'message' : 'Slot is not available.' } }
+
     def getResponse(self):
         return self.response
 
@@ -300,6 +327,27 @@ class Booking(object):
             return retval
 
 
+    def isDateSlotAvailable(self):
+
+        retval = False
+
+        cursor = cnx.cursor()
+        try:
+            query_isSlotAvailable =  (" SELECT status FROM Booking WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s ")
+            query_data = {
+                'Date' : self.Date,
+                'HourlySlot' : self.HourlySlot
+            }
+            cursor.execute(query_isSlotAvailable, query_data )
+            row = cursor.fetchone()
+            status = row[0]
+            if status == 0:
+                retval = True
+        except:
+            self.error = traceback.print_exc()
+        finally:
+            cursor.close()
+            return retval
 
     def isOwner(self):
 

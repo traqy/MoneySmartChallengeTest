@@ -72,7 +72,23 @@ def reserve():
     json_retval = cjson.encode(booking.getResponse())
 
     return json_retval
-    
+
+'''
+api method to reserve a slot
+
+example curl:
+     curl -s -H 'Content-Type: application/json' -X PUT -d '{"Date" : "2016-09-01", "HourlySlot" : 7, "ReserveeId" : "usertest1", "ReserveeComment" : "Test Reserve comment" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/reservebydateslot
+'''
+@app.route('/mini-app-booking-ds/api/user/reservebydateslot', methods=["PUT", "POST"])
+def reserve_by_date_slot():
+    content = cjson.decode(request.data)
+    booking = Booking( Date = content.get('Date'), HourlySlot = content.get('HourlySlot'), ReserveeId = content.get('ReserveeId'), ReserveeComment=content.get('ReserveeComment') )
+    booking.reserveByDateSlot()
+    json_retval = cjson.encode(booking.getResponse())
+
+    return json_retval
+
+
 
 '''
 api method for canceling existing booking by the user
