@@ -13,6 +13,8 @@ class Booking extends CI_Controller {
     public function home($method=NULL){
 
         $this->load->library('session');
+        
+        $this->load->helper('url');
 
         $session_email = $this->session->userdata('session_email');
         if (!isset($session_email)){

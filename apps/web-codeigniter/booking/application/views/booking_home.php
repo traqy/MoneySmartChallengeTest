@@ -43,7 +43,8 @@ echo "Email: $session_email";
 </form>
 
 <div>
-<a href="../home">Home</a>
+<!-- <a href="home">Home</a> -->
+<a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
 <a href="logout">Logout</a>
 <?php if ($access_level == 2){ echo '<a href="../adminbooking/manage">Admin</a>';} ?>
 </div>
