@@ -188,5 +188,8 @@ curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "d
 192.168.99.100 booking.techtest-moneysmart.com
 ```
   * Browse http://booking.techtest-moneysmart.com/index.php/booking/login
+    * Admin account user/pass
+      * admin/admin123
+
 
 

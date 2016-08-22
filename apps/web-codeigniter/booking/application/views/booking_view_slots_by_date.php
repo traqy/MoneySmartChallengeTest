@@ -102,10 +102,10 @@ echo "Email: $session_email";
   </div>
 
 <div>
-<a href="../home">Home</a>
-<a href="../logout">Logout</a>
+<a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
+<a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
 <!-- <?php if ($access_level == 2){ echo '<a href="../../adminbooking/manage">Admin</a>';} ?> -->
-<a href="<?php echo base_url('index.php/adminbooking/home'); ?>">Admin</a>
+<a href="<?php echo if ($access_level == 2){ base_url('index.php/adminbooking/home'); } ?>">Admin</a>
 </div>
 
 </body>
