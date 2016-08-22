@@ -104,7 +104,10 @@ echo "Email: $session_email";
 <div>
 <a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
 <a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
-<a href="<?php if ($access_level == 2){ echo base_url('index.php/adminbooking/home'); } ?>">Admin</a>
+<?php if ($access_level == 2){
+  $url=base_url('index.php/adminbooking/home');
+  echo "<a href='$url'>Admin Page</a>";
+}?>
 </div>
 
 </body>
