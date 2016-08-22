@@ -73,7 +73,7 @@ if (isset($dates)) {
 
 <div>
 <a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
-<a href="logout">Logout</a>
+<a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
 <?php if ($access_level == 2){
   $url=base_url('index.php/adminbooking/home');
   echo "<a href='$url'>Admin Page</a>";

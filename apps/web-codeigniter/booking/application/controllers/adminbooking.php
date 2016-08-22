@@ -2,6 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 
 require_once(APPPATH.'libraries/utils.php');
+require_once(APPPATH.'libraries/router.php');
 
 include_once (dirname(__FILE__) . "/booking.php");
 
@@ -21,16 +22,14 @@ class Adminbooking extends CI_Controller {
         
         $session_email = $this->session->userdata('session_email');
         if (!isset($session_email)){
-            if ( $method == 'signup' ) {
-                $this->signup();
-            }
-            else{
-                echo "You are not logged in.";
-                $this->onlogin();
-            }
+            // redirect to Booking login
+            echo "Booking->logout";
+            $this->logout();
         }else{
             $access_level = $this->session->userdata('access_level');
 
+            // tentatively direct home -> to manage page
+            $this->manage();
         }
 
     }
@@ -47,7 +46,6 @@ class Adminbooking extends CI_Controller {
             }
             else{
                 echo "You are not logged in.";
-                $this->onlogin();
             }
         }else{
             $access_level = $this->session->userdata('access_level');
