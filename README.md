@@ -60,6 +60,8 @@
 
 
 ## Deployment using Docker
+  * Pre-requisites
+    * Docker tools: docker, docker-machine, and docker-compose
   * Build images
     * DB - MySQL Service
     ```
