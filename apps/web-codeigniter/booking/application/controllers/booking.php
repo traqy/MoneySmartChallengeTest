@@ -14,6 +14,13 @@ class Booking extends CI_Controller {
         $this->home();
     }
 
+    public function about(){
+        
+        $this->load->helper('html','url','assets');
+
+        $this->load->view('booking_about');
+    }
+
     public function home($method=NULL){
 
         $this->load->library('session');
