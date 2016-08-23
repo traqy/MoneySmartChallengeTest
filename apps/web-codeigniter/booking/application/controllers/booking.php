@@ -18,7 +18,9 @@ class Booking extends CI_Controller {
 
         $this->load->library('session');
 
-        $this->load->helper('url');
+        $this->load->helper('url','assets');
+
+        
 
         $session_email = $this->session->userdata('session_email');
         if (!isset($session_email)){
@@ -31,6 +33,11 @@ class Booking extends CI_Controller {
             }
         }
         else{
+
+            $this->load->helper('html');
+            $asset_url = asset_url();
+            //echo "$asset_url/css/booking-webapp-table.css";
+
             $access_level = $this->session->userdata('access_level');
 
             $data['session_email'] = $session_email;

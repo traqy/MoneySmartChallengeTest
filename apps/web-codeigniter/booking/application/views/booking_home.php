@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Tennis Court Schedule Pick A Date</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+  
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
-  <style>
+  <?php echo link_tag('assets/css/booking-webapp-table.css'); ?>
+  <?php echo link_tag('assets/css/menu.css'); ?>
+<!--   <style>
       table {
         border-collapse: collapse;
         }
@@ -16,7 +19,7 @@
             border: 1px solid black;
         }
   </style>
-  <script>
+ -->  <script>
 
   var dateToday = new Date(); 
 
@@ -34,31 +37,37 @@
 </head>
 <body>
 
+<div>
+<form id="frmDate" name="frmDate" action="home/test" method="post">
+<ul>
+  <li><a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a></li>
+  <li><a href="<?php echo base_url('index.php/booking/logout');?>">Logout</a></li>
+  <?php if ($access_level == 2){ $url=base_url('index.php/adminbooking/manage'); echo "<li><a href='$url'>Admin Page</a></li>"; } ?>
+  <li><a href="">Enter Date</a></li>
+  <li><a href="#"><input type="text" id="date" name="date"></a></li>
+  <li><a href="#<?php echo "$session_email"; ?>"><?php echo "Account: $session_email"; ?></a></li>
+  </form>
+</div>
+
+</ul>
+</li>
 <div> 
 <?php if (isset($message)) {echo "$message<br>";} ?>
 </div>
 
 
-<?php
-echo "Email: $session_email<br>";
-?>
-
-<div>
- <form id="frmDate" name="frmDate" action="home/test" method="post">
-    Pick Date: <input type="text" id="date" name="date">
-</form>
-</div>
-
-<div>
-<table>
- <tr><td><?php if (isset($date)){ echo $date; } ?></td></tr>
+<div class="table-title">
+<table class="table-fill">
+ <thead>
  <tr>
- <td>Hour</td>
- <td>Reservee</td>
- <td>Comment</td>
- <td>Status</td>
- <td></td>
+ <th class="text-left"><?php if (isset($date)){ echo $date; } ?></th>
+ <th class="text-left">Reservee</th>
+ <th class="text-left">Comment</th>
+ <th class="text-left">Status</th>
+ <th class="text-left"></th>
  </tr>
+ </thead>
+ <tbody>
  <?php 
     if (!isset($date_slots)){
     }
@@ -117,19 +126,8 @@ echo "Email: $session_email<br>";
     }
     
   ?>
+  </tbody>
   </table>
-</div>
-
-<div>
-
-<!-- <a href="home">Home</a> -->
-<a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
-<a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
-<?php if ($access_level == 2){
-  $url=base_url('index.php/adminbooking/manage');
-  echo "<a href='$url'>Admin Page</a>";
-}?>
-
 </div>
 
 </body>
