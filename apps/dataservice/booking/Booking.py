@@ -50,6 +50,7 @@ class Booking(object):
         self.FirstName = kwargs.get('FirstName')
         self.LastName = kwargs.get('LastName')
         self.Status = kwargs.get('Status')
+        self.db_slot_info = {}
 
 
         self.response = {}
@@ -279,6 +280,141 @@ class Booking(object):
             cursor.close()
 
 
+    def cancelByDateHourlySlot(self):
+
+        cursor = cnx.cursor()
+
+        try:
+
+            self.db_slot_info = self.getDateHourlySlotInfo()
+
+            if not self.db_slot_info:
+                self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Date hourly slot not existing or not published yet.' } }
+            elif (self.db_slot_info['Status'] == 0 ):
+                self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "Date hourly slot status already opened." } }
+            else:
+
+                self.id = self.db_slot_info.get('id')
+                self.ReserveeId = self.db_slot_info['ReserveeId']
+                query_data = {
+                    'Date' : self.Date,
+                    'HourlySlot' : self.HourlySlot
+                }                
+
+                query_sql = ( " UPDATE Booking SET ReserveeId='', ReserveeComment='', status = 0 WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s" )        
+
+                if self.isAdmin(self.UserId):
+                    try:
+                        cursor.execute(query_sql, query_data )
+                        cnx.commit()
+
+                        self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "ADMIN have successfully cancelled the reservation slot." } }
+                    except:
+                        self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'ADMIN cancel exception error encountered.' } }
+                        pass
+                else:
+                    if not self.ReserveeId == self.UserId:
+                        self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'User is not the owner of the reservation slot.' } }
+                    elif self.db_slot_info['Status'] == 0:
+                        self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Slot is already cancelled.' } }
+                    else:
+                        try:
+                            cursor.execute(query_sql, query_data )
+                            cnx.commit()
+                            self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "OWNER: You have successfully cancelled your reservation slot." } }
+                        except:
+                            self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'OWNER: cancel exception error encountered.' } }
+                            pass
+
+        except:
+            self.response = { 'cancelByDateHourlySlot' : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'exception error encountered.' } }
+        finally:
+            cursor.close()
+
+    def closeByDateHourlySlot(self):
+
+        json_response_signature_id = 'closeByDateHourlySlot'
+
+        cursor = cnx.cursor()
+
+        try:
+
+            self.db_slot_info = self.getDateHourlySlotInfo()
+
+            if not self.db_slot_info:
+                self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Date hourly slot not existing or not published yet.' } }
+            elif (self.db_slot_info['Status'] == 1 ):
+                self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "Date hourly slot status already closed." } }
+            else:
+
+                self.id = self.db_slot_info.get('id')
+                self.ReserveeId = self.db_slot_info['ReserveeId']
+                query_data = {
+                    'Date' : self.Date,
+                    'HourlySlot' : self.HourlySlot
+                }                
+
+                query_sql = ( " UPDATE Booking SET ReserveeId='', ReserveeComment='', status = -1 WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s" )        
+
+                if not self.isAdmin(self.UserId):
+                    self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Permission denied.' } }
+                else:
+                    try:
+                        cursor.execute(query_sql, query_data )
+                        cnx.commit()
+
+                        self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "ADMIN have successfully close the reservation slot." } }
+                    except:
+                        self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'ADMIN close exception error encountered.' } }
+                        pass
+
+        except:
+            self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'exception error encountered.' } }
+        finally:
+            cursor.close()
+
+    def openByDateHourlySlot(self):
+
+        json_response_signature_id = 'openByDateHourlySlot'
+
+        cursor = cnx.cursor()
+
+        try:
+
+            self.db_slot_info = self.getDateHourlySlotInfo()
+
+            if not self.db_slot_info:
+                self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Date hourly slot not existing or not published yet.' } }
+            elif (self.db_slot_info['Status'] == 0 ):
+                self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "Date hourly slot status already open." } }
+            else:
+
+                self.id = self.db_slot_info.get('id')
+                self.ReserveeId = self.db_slot_info['ReserveeId']
+                query_data = {
+                    'Date' : self.Date,
+                    'HourlySlot' : self.HourlySlot
+                }                
+
+                query_sql = ( " UPDATE Booking SET ReserveeId='', ReserveeComment='', status = 0 WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s" )        
+
+                if not self.isAdmin(self.UserId):
+                    self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'Permission denied.' } }
+                else:
+                    try:
+                        cursor.execute(query_sql, query_data )
+                        cnx.commit()
+
+                        self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'success', 'message' : "ADMIN have successfully open the reservation slot." } }
+                    except:
+                        self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'ADMIN open exception error encountered.' } }
+                        pass
+
+        except:
+            self.response = { json_response_signature_id : { 'date' : self.Date, 'HourlySlot' : self.HourlySlot, 'status' : 'failed' , 'message' : 'exception error encountered.' } }
+        finally:
+            cursor.close()
+
     def viewBookingDateSlots(self):
 
         cursor = cnx.cursor()        
@@ -349,6 +485,32 @@ class Booking(object):
         finally:
             cursor.close()
             return retval
+
+    def getDateHourlySlotInfo(self):
+
+        cursor = cnx.cursor()
+        try:
+            query_sql =  (" SELECT id, Date, ReserveeId, ReserveeComment, Status FROM Booking WHERE Date = %(Date)s and HourlySlot = %(HourlySlot)s ")
+            query_data = {
+                'Date' : self.Date,
+                'HourlySlot' : self.HourlySlot
+            }
+            cursor.execute(query_sql, query_data )
+            row = cursor.fetchone()
+            
+            if not row:
+                return {}
+            else:
+                return { 'id' : row[0], 'Date' : row[1], 'ReserveeId' : row[2], 'ReserveeComment' : row[3], 'Status' : row[4] }
+        except:
+            traceback.print_exc();
+            pass
+            return {}
+        finally:
+            cursor.close()
+
+
+    
 
     def isOwner(self):
 

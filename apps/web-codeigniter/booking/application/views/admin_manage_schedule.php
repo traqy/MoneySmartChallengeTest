@@ -39,10 +39,15 @@
   </script>
 </head>
 <body>
-
+<div>
 <?php
 echo "Email: $session_email";
 ?>
+</div>
+
+<div>
+Publish Date Schedules for Tennis Court.
+</div>
 
 <div>
 <form id="frmDate" action="generate" method="post">

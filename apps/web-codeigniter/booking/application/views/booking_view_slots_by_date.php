@@ -80,16 +80,36 @@ echo "Email: $session_email";
             $status =  $slot['Status'];
             $status_label = $array_status[$status];
             echo "<tr>";
-            echo "<form action='reserveForm' method='post'><input type='hidden' value='$date' name='date' id='date'><input type='hidden' value='$hourly_slot' name='hourly_slot' id='hourly_slot'><input type='hidden' value='$reservee_id' name='reservee_id' id='reservee_id'>";
+            echo "<form action='home' method='post'><input type='hidden' value='$date' name='date' id='date'><input type='hidden' value='$hourly_slot' name='hourly_slot' id='hourly_slot'><input type='hidden' value='$reservee_id' name='reservee_id' id='reservee_id'>";
             echo "<td>$hourly_display</td>";
             echo "<td>$reservee_id</td>";
             echo "<td>$reservee_comment</td>";
             echo "<td>$status_label</td>";
-            if ($status == 0 ){
-                echo "<td><input type='submit' name='Reserve' value='Reserve' /></td>";
+            if ($access_level == 2){
+                if ( $status == -1 ){
+                  // status is currently closed
+                  echo "<td><input type='submit' name='submit' value='Open' /></td>";
+                }
+                elseif ( $status == 0 ){
+                  echo "<td><input type='submit' name='submit' value='Close' /></td>";
+                }
+                else{
+                  echo "<td></td>";
+                }
             }
-            else{            
-                echo "<td></td>";   
+            else{
+                if ( $status == 0 ){
+                    echo "<td><input type='submit' name='submit' value='Reserve' /></td>";
+                }
+                else{
+                    if ( $reservee_id == $session_email ){
+                      echo "<td><input type='submit' name='submit' value='Cancel' /></td>";
+                    }
+                    else{
+                      echo "<td></td>";  
+                    }
+                    
+                }              
             }
             echo "</form>";
             echo "</tr>";
