@@ -10,6 +10,7 @@
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
   <?php echo link_tag('assets/css/booking-webapp-table.css'); ?>
   <?php echo link_tag('assets/css/menu.css'); ?>
+  
 <!--   <style>
       table {
         border-collapse: collapse;

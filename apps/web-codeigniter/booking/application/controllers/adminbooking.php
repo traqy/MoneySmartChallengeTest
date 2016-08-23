@@ -14,6 +14,8 @@ class Adminbooking extends CI_Controller {
 
     public function home(){
 
+        $this->load->helper('html','url','assets');
+
         $this->load->library('session');
 
         $datefrom = $this->input->post('datefrom');
@@ -35,6 +37,8 @@ class Adminbooking extends CI_Controller {
     }
 
     public function manage($method=NULL){
+
+        $this->load->helper('html','url','assets');
 
         $this->load->library('session');
         
@@ -65,6 +69,8 @@ class Adminbooking extends CI_Controller {
     }
 
     public function generate(){
+
+        $this->load->helper('html','url','assets');
 
         $this->load->library('session');
 

@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tennis Court Schedule Pick A Date</title>
+  <title>Login</title>
   <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
   
   <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
@@ -11,7 +11,6 @@
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
   <?php echo link_tag('assets/css/booking-webapp-table.css'); ?>
   <?php echo link_tag('assets/css/menu.css'); ?>  
-  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
 </head>
 
 <body>

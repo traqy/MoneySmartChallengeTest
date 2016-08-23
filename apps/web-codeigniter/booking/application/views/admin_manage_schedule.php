@@ -18,6 +18,9 @@
 
   <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
   <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+  <?php echo link_tag('assets/css/booking-webapp-table.css'); ?>
+  <?php echo link_tag('assets/css/menu.css'); ?>
+
   <script>
 
   var dateToday = new Date(); 
@@ -39,6 +42,18 @@
   </script>
 </head>
 <body>
+
+<div>
+<form id="frmDate" name="frmDate" action="home/test" method="post">
+<ul>
+  <li><a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a></li>
+  <li><a href="<?php echo base_url('index.php/booking/logout');?>">Logout</a></li>
+  <?php if ($access_level == 2){ $url=base_url('index.php/adminbooking/home'); echo "<li><a href='$url'>Admin Page</a></li>"; } ?>
+  <li><a href="#<?php echo "$session_email"; ?>"><?php echo "Account: $session_email"; ?></a></li>
+  </form>
+</div>
+
+
 <div>
 <?php
 echo "Email: $session_email";
@@ -57,12 +72,12 @@ Publish Date Schedules for Tennis Court.
 </form>
 </div>
 
-<div>
- <table>
+<div class="table-title">
+<table class="table-fill">
  <tr>
- <td>Date</td>
- <td>Publish Status</td>
- <td>Message</td>
+ <th>Date</th>
+ <th>Publish Status</th>
+ <th>Message</th>
  </tr>
 </div>
 <?php 
@@ -77,14 +92,7 @@ if (isset($dates)) {
 ?>
 
 <div>
-<a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
-<a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
-<?php if ($access_level == 2){
-  $url=base_url('index.php/adminbooking/home');
-  echo "<a href='$url'>Admin Page</a>";
-}?>
-
- </div>
+</div>
 
 </body>
 </html>
