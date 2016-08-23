@@ -21,14 +21,14 @@
   var dateToday = new Date(); 
 
   $(function() {    
-   $('#date').removeClass('hasDatepicker');
-   $('#date').datepicker({
-       dateFormat: 'yy-mm-dd',
-       minDate: dateToday,
-       onSelect: function(dateText, inst) {
-           $('#frmDate').submit();
-       }
-   });
+    $('#date').removeClass('hasDatepicker');
+    $('#date').datepicker({
+           dateFormat: 'yy-mm-dd',
+           minDate: dateToday,
+           onSelect: function(dateText, inst) {
+              $('#frmDate').submit();
+           },
+    });
   });
   </script>
 </head>
@@ -44,9 +44,8 @@ echo "Email: $session_email<br>";
 ?>
 
 <div>
- <form id="frmDate" name="frmDate" action="home" method="post">
-    <p>Pick Date: <input type="text" id="date" name="date"></p>
-    <input type='submit' name='submit' value='ShowDateSlots' />
+ <form id="frmDate" name="frmDate" action="home/test" method="post">
+    Pick Date: <input type="text" id="date" name="date">
 </form>
 </div>
 
@@ -113,16 +112,16 @@ echo "Email: $session_email<br>";
                 }              
             }
             echo "</form>";
-            echo "</tr>";
+            echo "</tr>\n";
         }
     }
     
   ?>
   </table>
-  </div>  
 </div>
 
 <div>
+
 <!-- <a href="home">Home</a> -->
 <a href="<?php echo base_url('index.php/booking/home'); ?>">Home</a>
 <a href="<?php echo base_url('index.php/booking/logout'); ?>">Logout</a>
@@ -130,6 +129,7 @@ echo "Email: $session_email<br>";
   $url=base_url('index.php/adminbooking/manage');
   echo "<a href='$url'>Admin Page</a>";
 }?>
+
 </div>
 
 </body>

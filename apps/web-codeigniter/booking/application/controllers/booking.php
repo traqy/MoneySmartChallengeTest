@@ -39,7 +39,6 @@ class Booking extends CI_Controller {
             # load post variable parameters
             $date = $this->input->post('date');
             $action = $this->input->post('submit');
-            echo "Action: $action<br>";
 
             $this->load->model("booking_model","model");
 
@@ -80,6 +79,9 @@ class Booking extends CI_Controller {
                 $data['session_email'] = $session_email;
                 $jo = json_decode(trim($response),TRUE);
                 $data['message'] = $jo['closeByDateHourlySlot']['message'];
+
+                $response = $this->model->viewSlotByDate($date);                
+                $data['date_slots'] = $response;
 
                 $this->load->view('booking_home', $data);
             }
