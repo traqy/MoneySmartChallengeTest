@@ -13,7 +13,7 @@ from Booking import Booking
 api method for registering or adding user
 
 example curl
-    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "btraquena@gmail.com" , "Password" : "123432" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/login
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "btraquena@gmail.com" , "Password" : "ten20304050" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/login
 '''
 @app.route('/mini-app-booking-ds/api/user/login', methods=["PUT", "POST"])
 def login():
@@ -71,10 +71,12 @@ example curl:
 @app.route('/mini-app-booking-ds/api/user/reserve', methods=["PUT", "POST"])
 def reserve():
     content = cjson.decode(request.data)
+    print content
     booking = Booking( Date = content.get('Date'), HourlySlot = content.get('HourlySlot'), ReserveeId = content.get('ReserveeId'), ReserveeComment=content.get('ReserveeComment') )
     booking.reserve()
     json_retval = cjson.encode(booking.getResponse())
 
+    print json_retval
     return json_retval
 
 '''
@@ -108,6 +110,61 @@ def cancel():
     json_retval = cjson.encode(booking.getResponse())
 
     return json_retval
+
+
+'''
+api method for canceling existing booking by the user
+
+example curl:
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "Date" : "2016-09-01", "HourlySlot" : 7, "UserId" : "usertest1"  }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/cancelbydatehourlyslot
+'''
+@app.route('/mini-app-booking-ds/api/user/cancelbydatehourlyslot', methods=["PUT", "POST"])
+def cancel_by_date_hourly_slot():
+    content = cjson.decode(request.data)
+    print content
+    booking = Booking( Date = content.get('Date'), HourlySlot = content.get('HourlySlot'), UserId = content.get('UserId') )
+    booking.cancelByDateHourlySlot()
+    json_retval = cjson.encode(booking.getResponse())
+
+    print json_retval
+    return json_retval
+
+
+'''
+api method for closing open hourly slot
+
+example curl:
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "Date" : "2016-09-01", "HourlySlot" : 7, "UserId" : "usertest1"  }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/openbydatehourlyslot
+'''
+@app.route('/mini-app-booking-ds/api/user/openbydatehourlyslot', methods=["PUT", "POST"])
+def open_by_date_hourly_slot():
+    content = cjson.decode(request.data)
+    print content
+    booking = Booking( Date = content.get('Date'), HourlySlot = content.get('HourlySlot'), UserId = content.get('UserId') )
+    booking.openByDateHourlySlot()
+    json_retval = cjson.encode(booking.getResponse())
+
+    print json_retval
+    return json_retval
+
+
+'''
+api method to change hourly slot status from close to open
+
+example curl:
+    curl -s -H 'Content-Type: application/json' -X PUT -d '{ "Date" : "2016-09-01", "HourlySlot" : 7, "UserId" : "usertest1"  }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/closebydatehourlyslot
+'''
+@app.route('/mini-app-booking-ds/api/user/closebydatehourlyslot', methods=["PUT", "POST"])
+def close_by_date_hourly_slot():
+    content = cjson.decode(request.data)
+    print content
+    booking = Booking( Date = content.get('Date'), HourlySlot = content.get('HourlySlot'), UserId = content.get('UserId') )
+    booking.closeByDateHourlySlot()
+    json_retval = cjson.encode(booking.getResponse())
+
+    print json_retval
+    return json_retval
+
 
 '''
 Admin API for generating future date slots

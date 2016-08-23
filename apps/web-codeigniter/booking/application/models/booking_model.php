@@ -44,6 +44,35 @@ class Booking_model extends CI_Model
 
     }
 
+    public function cancel($date, $hourly_slot, $email){
+
+        $rest_url_path = "user/cancelbydatehourlyslot";
+        $method = "POST";
+        $payload = json_encode( array( "Date" => $date, "HourlySlot" => $hourly_slot, "UserId" => $email) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+
+    }
+
+    public function close($date, $hourly_slot, $email){
+
+        $rest_url_path = "user/closebydatehourlyslot";
+        $method = "POST";
+        $payload = json_encode( array( "Date" => $date, "HourlySlot" => $hourly_slot, "UserId" => $email) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+
+    }
+
+    public function open($date, $hourly_slot, $email){
+
+        $rest_url_path = "user/openbydatehourlyslot";
+        $method = "POST";
+        $payload = json_encode( array( "Date" => $date, "HourlySlot" => $hourly_slot, "UserId" => $email) );
+        $result = $this->api_booking_rest_call($rest_url_path, $method, $payload);
+        return $result;
+
+    }
 
     private function api_booking_rest_call($urlpath, $method, $payload){
 

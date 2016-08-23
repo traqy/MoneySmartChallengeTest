@@ -10,10 +10,14 @@ class Booking extends CI_Controller {
         $this->home();
     }
 
+    public function viewSlotsByDate(){
+        $this->home();
+    }
+
     public function home($method=NULL){
 
         $this->load->library('session');
-        
+
         $this->load->helper('url');
 
         $session_email = $this->session->userdata('session_email');
@@ -32,50 +36,118 @@ class Booking extends CI_Controller {
             $data['session_email'] = $session_email;
             $data['access_level'] = $access_level;
         
+            # load post variable parameters
             $date = $this->input->post('date');
+            $action = $this->input->post('submit');
+            echo "Action: $action<br>";
+
             $this->load->model("booking_model","model");
 
             $data['hour_label_map'] = Utils::getHourLabelMapping();
 
-            if ( $method == 'viewSlotsByDate' ) {
-
+            //if ( $method == 'viewSlotsByDate' ) {
+            if ( $action == 'ShowDateSlots' ) {
                 $data['date'] = $date;
                 if (!empty($date)){
                     $data['date'] = $date;
-                    $data['date_slots'] = $this->model->viewSlotByDate($date);
-                    $this->load->view('booking_view_slots_by_date',$data);
+                    $data['session_email'] = $session_email;
+
+                    $response = $this->model->viewSlotByDate($date);
+                    $data['date_slots'] = $response;
+                    $this->load->view('booking_home',$data);
                 }
             }
-            elseif ( $method == 'logout' ) {
-                $this->logout();
-            }
-            elseif ( $method == 'login' ) {
-                $this->login();
-            }
-            elseif ( $method == 'reserveForm' ) {
+            elseif ( $action == 'Book' ) {
                 $hourly_slot = $this->input->post('hourly_slot');
                 $reservee_id = $this->input->post('reservee_id');
-
+                
                 $data['date'] = $date;
                 $data['hourly_slot'] = $hourly_slot;
                 $data['reservee_id'] = $reservee_id;
                 $data['session_email'] = $session_email;
+
                 $this->load->view('booking_reserve_slot_form', $data);
             }
-            elseif ( $method == 'reserveSlot' ) {
+            elseif ( $action == 'Close' ) {
+                $hourly_slot = $this->input->post('hourly_slot');
+                $reservee_id = $this->input->post('reservee_id');
+
+                $response = $this->model->close($date, $hourly_slot, $session_email);
+                
+                $data['date'] = $date;
+                $data['hourly_slot'] = $hourly_slot;
+                $data['reservee_id'] = $reservee_id;
+                $data['session_email'] = $session_email;
+                $jo = json_decode(trim($response),TRUE);
+                $data['message'] = $jo['closeByDateHourlySlot']['message'];
+
+                $this->load->view('booking_home', $data);
+            }
+            elseif ($action == "Cancel"){
+                $hourly_slot = $this->input->post('hourly_slot');
+                $reservee_id = $this->input->post('reservee_id');
+
+                $response = $this->model->cancel($date, $hourly_slot, $session_email);
+
+                $jo = json_decode(trim($response),TRUE);
+                $data['date'] = $date;
+                $data['hourly_slot'] = $hourly_slot;
+                $data['reservee_id'] = $reservee_id;
+                $data['session_email'] = $session_email;
+                $data['message'] = $jo['cancelByDateHourlySlot']['message'];
+
+                $response = $this->model->viewSlotByDate($date);                
+                $data['date'] = $date;
+                $data['date_slots'] = $response;
+
+                $this->load->view('booking_home',$data);
+
+            }
+            elseif ($action == "Open"){
+                $hourly_slot = $this->input->post('hourly_slot');
+                $reservee_id = $this->input->post('reservee_id');
+
+                $response = $this->model->open($date, $hourly_slot, $session_email);
+
+                $jo = json_decode(trim($response),TRUE);
+                $data['date'] = $date;
+                $data['hourly_slot'] = $hourly_slot;
+                $data['reservee_id'] = $reservee_id;
+                $data['session_email'] = $session_email;
+                $data['message'] = $jo['openByDateHourlySlot']['message'];
+
+                $response = $this->model->viewSlotByDate($date);                
+                $data['date'] = $date;
+                $data['date_slots'] = $response;
+
+                $this->load->view('booking_home',$data);
+
+            }            
+            elseif ( $action == 'Update' ) {
                 $hourly_slot = $this->input->post('hourly_slot');
                 $reservee_id = $this->input->post('reservee_id');
                 $reservee_comment = $this->input->post('reservee_comment');
 
                 $this->load->model("booking_model","model");
                 $response = $this->model->reserveSlot($date, $hourly_slot,$reservee_id, $reservee_comment);
-                //var_dump($response);
 
                 $jo = json_decode(trim($response),TRUE);
                 $status = $jo['reserveByDateSlot']['status'];
                 if ($status == 'success'){
                     $data['message'] = "You have successfully booked slot $date:$hourly_slot.";
-                    $this->load->view('booking_view_slots_by_date',$data);
+
+                    if (!isset($date)){
+                        $date = date("Y-m-d");
+                    }
+
+                    $response = $this->model->viewSlotByDate($date);
+
+                    $data['date'] = $date;
+                    $data['date_slots'] = $response;
+                    $data['hourly_slot'] = $hourly_slot;
+                    $data['reservee_id'] = $reservee_id;
+
+                    $this->load->view('booking_home',$data);
                 }
                 else{
                     $data['date'] = $date;
@@ -84,15 +156,65 @@ class Booking extends CI_Controller {
 
                     $status_message =  $jo['reserveByDateSlot']['message'];
                     $data['message'] = "$date:$hourly_slot: $status_message";
-                    //$this->load->view('booking_reserve_slot_form', $data);
-                    $this->load->view('booking_view_slots_by_date',$data);
+                    $this->load->view('booking_home',$data);
                 }
             
             }else{
+                # default current date view slots
+                if (!isset($date)){
+                    $date = date("Y-m-d");
+                }
+                $data['date'] = $date;
+                $data['session_email'] = $session_email;
+
+                $response = $this->model->viewSlotByDate($date);
+                $data['date_slots'] = $response;
+
                 $this->load->view('booking_home', $data);
             }
         }
     }
+
+
+    public function cancel(){
+
+        $this->load->library('session');
+
+        $this->load->helper('url');
+
+        $session_email = $this->session->userdata('session_email');
+        if (!isset($session_email)){
+            if ( $method == 'signup' ) {
+                $this->signup();
+            }
+            else{
+                echo "You are not logged in.";
+                $this->onlogin();
+            }
+        }
+        else{
+
+            $access_level = $this->session->userdata('access_level');
+
+            $data['session_email'] = $session_email;
+            $data['access_level'] = $access_level;
+        
+            $date = $this->input->post('date');
+            $hourly_slot = $this->input->post('hourly_slot');
+
+            $this->load->model("booking_model","model");
+
+            $this->model->cancel($date, $hourly_slot, $email);
+
+        }
+    }
+
+    public function openslot($param=NULL){
+
+        echo "TODO-reopen slot.";
+
+    }
+
     public function onlogin(){
         $email = $this->input->post('email');
         $password = $this->input->post('password');
