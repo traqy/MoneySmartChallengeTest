@@ -1,7 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
-<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tennis Court Schedule Pick A Date</title>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css">
+  
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  <script src="https://code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script> 
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+  <?php echo link_tag('assets/css/booking-webapp-table.css'); ?>
+  <?php echo link_tag('assets/css/menu.css'); ?>  
+
+</head>
+
 <body>
+
+<div>
+<form id="frmDate" name="frmDate" action="home/test" method="post">
+<ul>
+  <li><a href="#About">About</a></li>
+  <li><a href="login">Login</a></li>
+  </form>
+</div>
+
+
 <?php
     if ( isset($message) ){
         echo $message;
@@ -31,10 +56,6 @@ app.controller('formCtrl', function($scope) {
     $scope.reset();
 });
 </script>
-
-<div>
-<a href="login">Back To Login</a>
-</div>
 
 </body>
 </html>

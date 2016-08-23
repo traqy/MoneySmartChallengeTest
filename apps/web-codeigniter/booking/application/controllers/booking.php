@@ -225,6 +225,8 @@ class Booking extends CI_Controller {
     }
 
     public function onlogin(){
+        $this->load->helper('html','url','assets');
+
         $email = $this->input->post('email');
         $password = $this->input->post('password');
 
@@ -232,6 +234,8 @@ class Booking extends CI_Controller {
     }
 
     public function login(){
+
+        $this->load->helper('html','url','assets');
 
         $this->load->library('session');
 
@@ -284,6 +288,9 @@ class Booking extends CI_Controller {
     }
 
     public function logout(){
+
+        $this->load->helper('url','assets');
+
         $this->load->library('session');
 
         $this->session->unset_userdata('session_email');
@@ -295,6 +302,7 @@ class Booking extends CI_Controller {
 
     public function register() {
 
+        $this->load->helper('html','url','assets');
 
         $email = $this->input->post('email');
         $password = $this->input->post('password');
@@ -342,6 +350,7 @@ class Booking extends CI_Controller {
 
     public function signup(){
 
+        $this->load->helper('html','url','assets');
         $this->load->view('booking_signup');
 
     }
