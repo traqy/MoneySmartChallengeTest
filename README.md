@@ -64,36 +64,49 @@
     * Docker tools: docker, docker-machine, and docker-compose
   * Build images
     * DB - MySQL Service
-    ```
+    
+```
 cd docker/mysql
 ./build.sh
 ```
+
     * Dataservice REST API
-    ```
+    
+```
 cd docker/dataservice
 ./build.sh
 ```
-    * Web App - NodeJS Frontend UI (UNDER CONSTRUCTION)
-    ```    
+
+  * Web App - NodeJS Frontend UI (UNDER CONSTRUCTION)
+  
 ```
+```
+
   * Run containers
     * DB - MySQL service
-    ```
+    
+```
 cd docker/mysql
 ./run.sh
 ```
-    * REST API - Python Flask RESTFul service
-    ```
+
+  * REST API - Python Flask RESTFul service
+    
+```
 cd docker/mysql
 ./run.sh
 ```
-    * Web Server - NodeJS webapp service ( http://192.168.99.100:8080/ )
-    ```
+
+  * Web Server - NodeJS webapp service ( http://192.168.99.100:8080/ )
+  
+```
 cd docker/web-codeigniter
 ./run.sh
 ```
+
   * Show running containers
-    ```
+  
+```
 CONTAINER ID        IMAGE                               COMMAND                  CREATED             STATUS              PORTS                    NAMES
 bb8dd8192c69        3d4c64ef8262                        "/bin/sh -c 'apt-get "   24 seconds ago      Up 23 seconds       80/tcp                   fervent_torvalds
 ac17fcf4134a        traqy/booking-miniapp-dataservice   "/bin/bash"              12 hours ago        Up 12 hours         0.0.0.0:5000->5000/tcp   booking-miniapp-dataservice
@@ -105,20 +118,26 @@ ac17fcf4134a        traqy/booking-miniapp-dataservice   "/bin/bash"             
 ## Dataservice RESTful-API Endpoints
   * Register
     * Request
-    ```
+    
+```
     curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest2" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/register
 ```
+
     * Response
-    ```
+    
+```
     {"register": {"status": "success", "message": "User usertest2 is successfully registered."}}
 ```
   * Reserve
     * Request
-    ```
+    
+```
     curl -s -H 'Content-Type: application/json' -X PUT -d '{"Date" : "2016-08-18", "HourlySlot" : 7, "ReserveeId" : "usertest1", "ReserveeComment" : "Test Reserve comment" }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/reserve
 ```
+
     * Response
-    ```
+    
+```
 {"reserve": {"status": "failed", "message": "Slot is not available."}}%    
 ```    
   * View Date Slots
