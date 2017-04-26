@@ -180,20 +180,26 @@ ac17fcf4134a        traqy/booking-miniapp-dataservice   "/bin/bash"             
 ```
   * Cancel owned booked slots
     * Request
-    ```
+    
+```
 curl -s -H 'Content-Type: application/json' -X PUT -d '{ "username" : "usertest1" , "id" : 1 }' http://192.168.99.100:5000/mini-app-booking-ds/api/user/cancel    
 ```    
+
     * Response
-    ```
+    
+```
 {"cancel": {"status": "failed", "message": "Login Userid does not match ReserveeId.", "id": 1}}    
 ```
   * Generate future dates slots
     * Request
-    ```
+    
+```
 curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "dateFrom" : "2016-08-25", "dateTo" : "2016-08-31" }' http://192.168.99.100:5000/mini-app-booking-ds/api/admin/generate
 ```
+
     * Response
-    ```
+    
+```
 {"adminGenerateFutureDateHourlySlots": [{"2016-08-25": {"status": "success"}}, {"2016-08-26": {"status": "success"}}, {"2016-08-27": {"status": "success"}}, {"2016-08-28": {"status": "success"}}, {"2016-08-29": {"status": "success"}}, {"2016-08-30": {"status": "success"}}]}root@1c2c4d782fd8:~/apps/dataservice/booking
 ```
 
@@ -201,13 +207,17 @@ curl -s -H 'Content-Type: application/json' -X PUT -d '{ "UserId" : "admin" , "d
 ## Access Web UI
   * Edit your /etc/hosts
     * AWS EC2 Haproxy Public facing load balancer
-  ```
+    
+```
 52.221.248.211 booking.techtest-moneysmart.com  
 ```
+
     * If you do not want to use public facing IP loadbalancer
-  ```
+    
+```
 192.168.99.100 booking.techtest-moneysmart.com
 ```
+
   * Browse http://booking.techtest-moneysmart.com/index.php/booking/login
     * Admin account user/pass
       * admin/admin123
